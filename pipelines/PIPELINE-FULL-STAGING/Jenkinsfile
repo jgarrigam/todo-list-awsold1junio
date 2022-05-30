@@ -2,7 +2,13 @@ pipeline {
     agent any
     stages {
         
-        stage('SetUp'){
+        stage('Install sam-cli') {
+		steps {
+        	sh 'python3 -m venv venv && venv/bin/pip install aws-sam-cli'
+        	stash includes: '**/venv/**/*', name: 'venv'
+      		}
+    	}
+	stage('SetUp'){
             steps{
                 echo 'Setup Virtualenv for testing'
                 sh "bash pipelines/PIPELINE-FULL-STAGING/setup.sh"
